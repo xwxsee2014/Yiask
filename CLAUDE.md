@@ -1,199 +1,201 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+本文件为 Claude Code (claude.ai/code) 在此代码库中工作时提供指导。
 
-## Project Overview
+⚠️ **重要说明**：本文档描述的是项目所使用的开发框架（Specify Framework）及开发模式规范，**不包含项目自身的业务功能**。所有后续生成的文档、代码注释均应使用中文。
 
-This is the **Specify Framework** - a Spec-Driven Development (SDD) framework that enables AI-guided feature development through structured workflows. It's a meta-framework that provides templates, scripts, and AI prompts for managing software development projects with a specification-first approach.
+## 项目概述
 
-## Core Architecture
+本项目采用 **Specify Framework**（规范驱动开发框架，SDD）——一个通过结构化工作流程实现 AI 引导功能开发的元框架。它提供了模板、脚本和 AI 提示，用于管理软件开发生命周期，采用规范优先的方法。
 
-The framework implements a sequential workflow across 5 phases, with each phase building on the previous:
+## 核心架构
 
-1. **Specify** (`/speckit.specify`) → Create feature specification from natural language
-2. **Clarify** (`/speckit.clarify`) → Resolve ambiguities with targeted questions
-3. **Plan** (`/speckit.plan`) → Generate technical implementation plan
-4. **Tasks** (`/speckit.tasks`) → Break down into actionable, dependency-ordered tasks
-5. **Implement** (`/speckit.implement`) → Execute task list with validation checkpoints
+该框架实现了跨5个阶段的顺序工作流，每个阶段都建立在前一个阶段之上：
 
-### Key Directory Structure
+1. **Specify**（规范制定，`/speckit.specify`）→ 从自然语言创建功能规范
+2. **Clarify**（澄清确认，`/speckit.clarify`）→ 通过定向问题解决歧义
+3. **Plan**（计划制定，`/speckit.plan`）→ 生成技术实现计划
+4. **Tasks**（任务分解，`/speckit.tasks`）→ 分解为可执行的、依赖有序的任务
+5. **Implement**（实施执行，`/speckit.implement`）→ 执行任务列表并设置验证检查点
+
+### 关键目录结构
 
 ```
 ./
-├── .specify/                  # Framework infrastructure
-│   ├── scripts/bash/          # Core bash scripts
-│   │   ├── common.sh          # Shared utilities and functions
-│   │   ├── check-prerequisites.sh    # Validate workflow state
-│   │   ├── create-new-feature.sh     # Initialize feature branch/directory
-│   │   ├── setup-plan.sh            # Phase 1 setup script
-│   │   └── update-agent-context.sh  # Sync AI agent context files
-│   ├── templates/             # Document templates
-│   │   ├── spec-template.md          # Feature specification template
-│   │   ├── plan-template.md          # Implementation plan template
-│   │   ├── tasks-template.md         # Task breakdown template
-│   │   └── checklist-template.md     # Quality validation template
+├── .specify/                  # 框架基础设施
+│   ├── scripts/bash/          # 核心 bash 脚本
+│   │   ├── common.sh          # 共享工具和函数
+│   │   ├── check-prerequisites.sh    # 验证工作流状态
+│   │   ├── create-new-feature.sh     # 初始化功能分支/目录
+│   │   ├── setup-plan.sh            # 第一阶段设置脚本
+│   │   └── update-agent-context.sh  # 同步 AI 代理上下文文件
+│   ├── templates/             # 文档模板
+│   │   ├── spec-template.md          # 功能规范模板
+│   │   ├── plan-template.md          # 实施计划模板
+│   │   ├── tasks-template.md         # 任务分解模板
+│   │   └── checklist-template.md     # 质量验证模板
 │   └── memory/
-│       └── constitution.md           # Project governance principles
-├── .github/prompts/           # AI agent prompt definitions for each workflow command
-├── specs/[###-feature]/       # Per-feature documentation (auto-generated)
-└── .claude/commands/          # Auto-generated AI command shortcuts
+│       └── constitution.md           # 项目治理原则
+├── .github/prompts/           # 每个工作流命令的 AI 代理提示定义
+├── specs/[###-feature]/       # 每个功能的文档（自动生成）
+└── .claude/commands/          # 自动生成的 AI 命令快捷方式
 ```
 
-## Common Commands & Scripts
+## 常用命令与脚本
 
-All scripts use **absolute paths** and support **JSON output** via `--json` flag for programmatic use.
+所有脚本使用**绝对路径**，并支持通过 `--json` 标志提供**JSON输出**以便程序化使用。
 
-### Essential Scripts
+### 核心脚本
 
 ```bash
-# Initialize new feature (creates branch + feature directory)
+# 初始化新功能（创建分支 + 功能目录）
 ./.specify/scripts/bash/create-new-feature.sh "feature description"
 
-# Check workflow prerequisites
+# 检查工作流先决条件
 ./.specify/scripts/bash/check-prerequisites.sh --json
 
-# Validate for implementation phase (requires tasks.md)
+# 验证实施阶段（需要 tasks.md）
 ./.specify/scripts/bash/check-prerequisites.sh --json --require-tasks
 
-# Update AI agent context files
+# 更新 AI 代理上下文文件
 ./.specify/scripts/bash/update-agent-context.sh claude
 
-# Get feature paths only (no validation)
+# 仅获取功能路径（无验证）
 ./.specify/scripts/bash/check-prerequisites.sh --paths-only
 ```
 
-### Available Commands (Slash Commands)
+### 可用命令（斜杠命令）
 
-The framework supports these AI agent commands (accessed via `/` in Claude/Cursor):
+该框架支持以下 AI 代理命令（通过 `/` 在 Claude/Cursor 中访问）：
 
-- `/speckit.specify` - Create feature specification from natural language
-- `/speckit.clarify` - Resolve ambiguities with targeted questions
-- `/speckit.plan` - Generate technical implementation plan
-- `/speckit.tasks` - Break down into actionable, dependency-ordered tasks
-- `/speckit.implement` - Execute task list with validation
-- `/speckit.checklist` - Generate quality validation checklist
-- `/speckit.analyze` - Cross-artifact consistency analysis
+- `/speckit.specify` - 从自然语言创建功能规范
+- `/speckit.clarify` - 通过定向问题解决歧义
+- `/speckit.plan` - 生成技术实施计划
+- `/speckit.tasks` - 分解为可执行的、依赖有序的任务
+- `/speckit.implement` - 执行任务列表并验证
+- `/speckit.checklist` - 生成质量验证清单
+- `/speckit.analyze` - 跨工件一致性分析
 
-Each command has its prompt defined in `.github/prompts/`.
+每个命令的提示定义在 `.github/prompts/` 中。
 
-## Feature Branch Workflow
+## 功能分支工作流
 
-**Branch naming convention**: `###-descriptive-name` (e.g., `001-user-auth`, `002-payment-processing`)
+**分支命名规范**：`###-描述性名称`（例如 `001-user-auth`、`002-payment-processing`）
 
-Features are zero-padded 3-digit prefixes (001, 002, 003...). The scripts auto-detect the next available number.
+功能使用零填充的3位数字前缀（001, 002, 003...）。脚本自动检测下一个可用编号。
 
 ```bash
-# Create new feature (auto-creates branch with proper naming)
+# 创建新功能（自动创建正确命名的分支）
 ./.specify/scripts/bash/create-new-feature.sh "Add user authentication system"
 
-# For non-git repositories, set environment variable
+# 对于非 git 仓库，设置环境变量
 export SPECIFY_FEATURE="001-user-authentication"
 ```
 
-## Per-Feature Document Structure
+## 每个功能的文档结构
 
-When you run `/speckit.specify`, it creates:
+当你运行 `/speckit.specify` 时，它会创建：
 
 ```
-specs/[###-feature-name]/
-├── spec.md              # Business requirements & user stories (with P1/P2/P3 priorities)
-├── plan.md              # Technical architecture & decisions
-├── tasks.md             # Implementation task breakdown (generated by /speckit.tasks)
-├── research.md          # Technical research & decisions
-├── data-model.md        # Entity relationships & validation
-├── quickstart.md        # Integration scenarios
-├── contracts/           # API specifications (OpenAPI/GraphQL)
-└── checklists/          # Quality validation checklists
+specs/[###-功能名称]/
+├── spec.md              # 业务需求和用户故事（带 P1/P2/P3 优先级）
+├── plan.md              # 技术架构和决策
+├── tasks.md             # 实施任务分解（由 /speckit.tasks 生成）
+├── research.md          # 技术研究和决策
+├── data-model.md        # 实体关系和验证
+├── quickstart.md        # 集成场景
+├── contracts/           # API 规范（OpenAPI/GraphQL）
+└── checklists/          # 质量验证清单
 ```
 
-## Constitution Principles
+## 宪章原则
 
-This framework is governed by the **Specify Constitution** (`.specify/memory/constitution.md`). Key principles:
+该框架受 **Specify 宪章**（`.specify/memory/constitution.md`）治理。核心原则：
 
-1. **User Story Driven Development** - All features must have independently testable user stories with explicit P1/P2/P3 priorities
-2. **Test-First (MANDATORY)** - TDD cycle required for all stories; Red-Green-Refactor strictly enforced
-3. **Independent Testability** - Each story must be testable in isolation
-4. **Phased Implementation** - Ordered phases: Setup → Foundational → User Stories → Polish
-5. **Simplicity & Constitution Compliance** - Favor simplicity; all decisions validated against constitution
+1. **用户故事驱动开发** - 所有功能必须具有可独立测试的用户故事，并具有明确的 P1/P2/P3 优先级
+2. **测试优先（强制）** - 所有故事都需要 TDD 周期；严格执行红-绿-重构
+3. **独立可测试性** - 每个故事必须能够独立测试
+4. **分阶段实施** - 有序阶段：设置 → 基础 → 用户故事 → 完善
+5. **简洁性与宪章合规** - 倾向于简洁；所有决策根据宪章验证
 
-**Constitution Check** is a mandatory gate in `plan.md` - violations must be justified in writing.
+**宪章检查** 是 `plan.md` 中的强制门槛 - 违反必须书面说明理由。
 
-## Development Guidelines
+## 开发指南
 
-### Working with Specifications
+### 规范制定
 
-- **User stories MUST have priorities** (P1, P2, P3) for independent delivery
-- **Requirements MUST be testable** - avoid vague adjectives without metrics
-- **Success criteria MUST be measurable** - quantify performance/UX targets
-- **Each story should be independently implementable**
+- **用户故事必须有优先级**（P1, P2, P3）以实现独立交付
+- **需求必须可测试** - 避免没有指标的模糊形容词
+- **成功标准必须可衡量** - 量化性能/UX 目标
+- **每个故事应该能够独立实施**
 
-### Task Organization
+### 任务组织
 
-- **Phase-based execution**: Setup → Foundation → User Stories → Polish
-- **Parallel markers `[P]`** indicate tasks that can run simultaneously
-- **Story mapping `[US1]`, `[US2]`** enables independent story delivery
-- **Dependencies MUST be explicit** in task descriptions
+- **分阶段执行**：设置 → 基础 → 用户故事 → 完善
+- **并行标记 `[P]`** 表示可同时运行的任务
+- **故事映射 `[US1]`, `[US2]`** 启用独立故事交付
+- **依赖关系必须在任务描述中明确**
 
-### Script Integration Points
+### 脚本集成点
 
-All bash scripts in `.specify/scripts/bash/` follow these patterns:
-- Use **absolute paths** in all script calls
-- Support **JSON output** via `--json` flag for programmatic use
-- Include **error handling** with clear error codes and messages
-- Provide **fallback support** for non-git repositories via `SPECIFY_FEATURE` env variable
+`.specify/scripts/bash/` 中的所有 bash 脚本遵循这些模式：
+- 在所有脚本调用中使用**绝对路径**
+- 支持通过 `--json` 标志提供**JSON输出**以便程序化使用
+- 包含带有清晰错误代码和消息的**错误处理**
+- 通过 `SPECIFY_FEATURE` 环境变量为非 git 仓库提供**回退支持**
 
-## Multi-Agent Support
+## 多代理支持
 
-The framework maintains separate context files for different AI agents:
+该框架为不同的 AI 代理维护单独的上下文文件：
 - **GitHub Copilot**: `.github/copilot-instructions.md`
-- **Claude**: `CLAUDE.md` (this file)
+- **Claude**: `CLAUDE.md`（此文件）
 - **Cursor**: `.cursor/rules/specify-rules.mdc`
-- Others: See `update-agent-context.sh` for full list
+- **其他**：参见 `update-agent-context.sh` 获取完整列表
 
-Run `.specify/scripts/bash/update-agent-context.sh claude` after modifying constitution or templates to sync agent instructions.
+在修改宪章或模板后运行 `.specify/scripts/bash/update-agent-context.sh claude` 以同步代理指令。
 
-## Error Handling & Recovery
+## 错误处理与恢复
 
-### Common Issues
+### 常见问题
 
-- **Branch not on feature format** → Feature branches must match `###-name` pattern
-- **Missing prerequisites** → Run `check-prerequisites.sh` to validate workflow state
-- **Constitution violations** → Address principle conflicts in plan.md before proceeding
-- **Incomplete checklists** → Quality gates must pass before implementation
+- **分支不符合功能格式** → 功能分支必须匹配 `###-name` 模式
+- **缺少先决条件** → 运行 `check-prerequisites.sh` 验证工作流状态
+- **宪章违规** → 在继续之前解决 plan.md 中的原则冲突
+- **清单不完整** → 质量门槛必须通过才能实施
 
-### Recovery Patterns
+### 恢复模式
 
-- **Restart from spec** - Re-run `/speckit.specify` to rebuild from requirements
-- **Incremental fixes** - Use `/speckit.clarify` to resolve specification ambiguities
-- **Task regeneration** - Re-run `/speckit.tasks` after plan changes
+- **从规范重新开始** - 重新运行 `/speckit.specify` 从需求重建
+- **增量修复** - 使用 `/speckit.clarify` 解决规范歧义
+- **任务重新生成** - 计划更改后重新运行 `/speckit.tasks`
 
-## Quality Gates & Review Process
+## 质量门槛与审查流程
 
-Every implementation passes through:
+每个实施都经过：
 
-1. **Constitution compliance check** - All plans validated against `.specify/memory/constitution.md`
-2. **Coverage validation** - Every requirement must map to tasks
-3. **Checklist validation** - Quality checklists must pass before implementation
-4. **Traceability** - Requirements → Tasks → Implementation linkage
+1. **宪章合规检查** - 所有计划根据 `.specify/memory/constitution.md` 验证
+2. **覆盖验证** - 每个需求必须映射到任务
+3. **清单验证** - 质量清单必须在实施前通过
+4. **可追溯性** - 需求 → 任务 → 实施链接
 
-## Constitution-Driven Development
+## 宪章驱动开发
 
-The `.specify/memory/constitution.md` file defines **non-negotiable project principles**. All planning phases validate against these principles with explicit compliance gates.
+`.specify/memory/constitution.md` 文件定义了**不可协商的项目原则**。所有计划阶段都根据这些原则和明确的合规门槛进行验证。
 
-Constitution governance:
-- **Supersedes all other practices**
-- **Amendments require**: documentation of change + rationale + semantic version bump
-- **MAJOR**: principle removal/redefinition
-- **MINOR**: new principles
-- **PATCH**: clarifications
+宪章治理：
+- **超越所有其他实践**
+- **修订要求**：变更文档 + 理由 + 语义版本递增
+- **主版本**：原则移除/重新定义
+- **次版本**：新原则
+- **修订版本**：澄清
 
-## File Naming Conventions
+## 文件命名规范
 
-- **Feature IDs**: Zero-padded 3-digit prefixes (001, 002, 003...)
-- **Templates**: All in `.specify/templates/` with `-template.md` suffix
-- **Scripts**: Bash scripts in `.specify/scripts/bash/` with `.sh` extension
-- **Prompts**: AI commands in `.github/prompts/` with `.prompt.md` suffix
+- **功能 ID**：零填充的3位数字前缀（001, 002, 003...）
+- **模板**：`.specify/templates/` 中的所有文件，后缀为 `-template.md`
+- **脚本**：`.specify/scripts/bash/` 中的 bash 脚本，扩展名为 `.sh`
+- **提示**：`.github/prompts/` 中的 AI 命令，后缀为 `.prompt.md`
 
 ---
 
-**Version**: 1.0.0 | **Framework**: Specify SDD | **Last Updated**: 2025-10-31
+**版本**：1.0.0 | **框架**：Specify SDD | **最后更新**：2025-10-31
