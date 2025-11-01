@@ -144,9 +144,9 @@ specs/[###-功能名称]/
 - 包含带有清晰错误代码和消息的**错误处理**
 - 通过 `SPECIFY_FEATURE` 环境变量为非 git 仓库提供**回退支持**
 
-## 多代理支持
+## 多Agent支持
 
-该框架为不同的 AI 代理维护单独的上下文文件：
+该框架为不同的 AI Agent 维护单独的上下文文件：
 - **GitHub Copilot**: `.github/copilot-instructions.md`
 - **Claude**: `CLAUDE.md`（此文件）
 - **Cursor**: `.cursor/rules/specify-rules.mdc`
