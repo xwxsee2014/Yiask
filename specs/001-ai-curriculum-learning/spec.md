@@ -18,6 +18,11 @@
 - Q: Should learners be able to input answers via speech? → A: 是的，学习者需要通过语音输入进行练习
 - Q: Should exercise content be generated offline or in real-time? → A: 生成的练习内容应该离线生成，需要有内容提供者进行审核；需要实时处理的是学习者的语音输入部分
 - Q: Should the system evaluate learner answers in real-time and provide recommended answers? → A: 是的，系统需要对学习者回答进行实时质量评价并提供推荐回答，推荐回答在离线生成时提供并由内容提供者审核；评价和推荐回答均需要语音朗读
+- Q: What level of detail should the data model include? → A: 完全跳过数据模型定义，所有结构在实施时确定
+- Q: What API design and system architecture approach should be used? → A: RESTful API
+- Q: What are the overall system performance benchmarks? → A: 普通API响应时间<500ms (p95)，AI生成接口首token延迟<1min，支持100并发用户
+- Q: What deployment architecture strategy should be used? → A: 多容器编排部署方案
+- Q: What monitoring and logging strategy should be implemented? → A: 结构化JSON日志 + 基础指标监控
 
 ## User Scenarios & Testing
 
