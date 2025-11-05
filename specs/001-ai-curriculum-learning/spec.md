@@ -10,7 +10,7 @@
 ### Session 2025-11-03
 
 - Q: What is the target scale for this platform in terms of concurrent users and data volume? → A: Small scale (<100 concurrent users)
-- Q: Which AI services do you prefer to use for content generation and text-to-speech? → A: 商用平台（硅基流动/DeepSeek/Qwen3）+ Xinference部署的CosyVoice2-0.5b模型
+- Q: Which AI services do you prefer to use for content generation and text-to-speech? → A: Dify平台代理（调用硅基流动提供的DeepSeek/Qwen3）+ Xinference部署的CosyVoice2-0.5b和Whisper模型
 - Q: How should the system provide images for the "image+text" exercises? → A: 让用户自行上传图片
 - Q: What is your preferred tech stack for this platform? → A: Python/FastAPI后端 + React前端 + PostgreSQL数据库 + Docker部署
 - Q: What are your security and privacy requirements for user data? → A: 简单JWT认证 + HTTPS传输 + 对密码字段进行加密
@@ -23,6 +23,17 @@
 - Q: What are the overall system performance benchmarks? → A: 普通API响应时间<500ms (p95)，AI生成接口首token延迟<1min，支持100并发用户
 - Q: What deployment architecture strategy should be used? → A: 多容器编排部署方案
 - Q: What monitoring and logging strategy should be implemented? → A: 结构化JSON日志 + 基础指标监控
+
+### Session 2025-11-04
+
+- Q: Which orchestration approach do you prefer for multi-container deployment? → A: Docker Compose (docker-compose.yaml) - Simple, YAML-based orchestration perfect for this scale
+- Q: How should the container services be structured for the multi-container setup? → A: Separate containers: Backend (FastAPI), Frontend (React), Database (PostgreSQL), with AI services (Dify, Xinference) deployed independently
+- Q: How should environment variables and configuration be managed for the multi-container setup? → A: Root .env file + service-specific env files (.env.backend, .env.frontend) for configuration
+- Q: How should the PostgreSQL database container be configured? → A: Named volume for data persistence + init scripts (.sql/.sh) for database schema creation
+- Q: How should service dependencies and build strategy be configured? → A: Local Docker builds (./backend/Dockerfile, ./frontend/Dockerfile) + depends_on with health checks for startup order
+- Q: If users upload PDFs, what component should be used for content recognition and image extraction? → A: MinerU - for PDF content recognition including OCR and image extraction
+- Q: How should offline content generation be implemented since the review process is simple? → A: FastAPI background tasks + database status tracking (simple polling for progress, no queue system)
+- Q: Should AI text generation and evaluation services use Dify agents or direct API calls? → A: Use Dify as LLMOps platform to create agents for calling (not direct model API calls)
 
 ## User Scenarios & Testing
 
@@ -164,7 +175,7 @@
 - **FR-017**: 内容提供者 MUST 能够审核推荐回答（通过/修改/驳回）
 - **FR-018**: 内容提供者 MUST 能够设置练习生成参数（题目数量、题型偏好、难度范围）
 - **FR-019**: 内容提供者 MUST 能够管理自己创建的课程内容（编辑、删除、发布/下线）
-- **FR-020**: 系统 MUST 支持两种课程内容输入方式：1）上传PDF文件并自动解析提取课程内容（包含OCR文字识别能力）2）手动录入课程内容（包括文本和图片）
+- **FR-020**: 系统 MUST 支持两种课程内容输入方式：1）上传PDF文件并使用MinerU组件自动解析提取课程内容（包含OCR文字识别能力和图片提取）2）手动录入课程内容（包括文本和图片）
 
 #### 系统管理功能
 
@@ -232,11 +243,12 @@
 
 ## Dependencies
 
-- 需要稳定的AI文本生成服务以创建练习内容 - 使用商用平台（硅基流动/DeepSeek/Qwen3）
-- 需要后台任务队列系统以支持离线练习内容生成和审核流程
-- 需要实时文本分析和评价服务以支持学习者回答质量评价 - 使用商用平台（硅基流动/DeepSeek/Qwen3）
+- 需要PDF内容解析和OCR处理服务以支持课程材料上传 - 使用MinerU组件进行PDF内容识别和图片提取
+- 需要Dify作为LLMOps平台以创建AI文本生成代理 - 用于练习内容生成（调用硅基流动提供的DeepSeek/Qwen3）
+- 需要FastAPI后台任务机制以支持离线练习内容生成和简单审核流程 - 通过background tasks + 数据库状态跟踪实现
+- 需要Dify作为LLMOps平台以创建实时文本分析代理 - 用于学习者回答质量评价（调用硅基流动提供的DeepSeek/Qwen3）
 - 需要高质量的AI语音合成服务以生成朗读音频 - 使用Xinference部署的CosyVoice2-0.5b模型
-- 需要语音识别服务以支持学习者语音输入 - 使用本地部署的Whisper模型
+- 需要语音识别服务以支持学习者语音输入 - 使用Xinference部署的Whisper模型
 - 需要图片上传和存储服务（内容提供者上传练习场景图片）
 - 需要课程内容数据库或课程资源管理系统 - PostgreSQL
 - 需要用户认证和个人档案管理系统
