@@ -201,8 +201,9 @@ specs/[###-功能名称]/
 **版本**：1.0.0 | **框架**：Specify SDD | **最后更新**：2025-10-31
 
 ## Active Technologies
-- Python 3.11 (FastAPI backend), JavaScript/TypeScript (React frontend) + FastAPI, React, PostgreSQL, Docker Compose, MinerU, Dify (LLMOps), Xinference (TTS/ASR) (001-ai-curriculum-learning)
-- PostgreSQL with named volumes for persistence (001-ai-curriculum-learning)
+- Python 3.11 (FastAPI backend), JavaScript/TypeScript (React frontend) + FastAPI, React, PostgreSQL, Docker Compose, MinerU, Dify (LLMOps), Xinference (TTS/ASR), Alembic (001-ai-curriculum-learning)
+- PostgreSQL with named volumes for persistence + Alembic for database versioning (001-ai-curriculum-learning)
 
 ## Recent Changes
-- 001-ai-curriculum-learning: Added Python 3.11 (FastAPI backend), JavaScript/TypeScript (React frontend) + FastAPI, React, PostgreSQL, Docker Compose, MinerU, Dify (LLMOps), Xinference (TTS/ASR)
+- 001-ai-curriculum-learning: Added Python 3.11 (FastAPI backend), JavaScript/TypeScript (React frontend) + FastAPI, React, PostgreSQL, Docker Compose, MinerU, Dify (LLMOps), Xinference (TTS/ASR), Alembic
+- 001-ai-curriculum-learning: Database versioning with Alembic (backend/src/alembic.ini), auto-migration via ENABLE_MIGRATION parameter, DATABASE_URL config

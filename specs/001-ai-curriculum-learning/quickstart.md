@@ -52,6 +52,10 @@ The platform consists of the following services:
 
 ## Quick Start (5 minutes)
 
+> **Development Mode**: You have two options for development:
+> - **Local Development** (Recommended): Run backend and frontend locally for easier debugging and hot reload
+> - **Docker Deployment** (Quick Start): Use Docker Compose for fast deployment with all services containerized
+
 ### Step 1: Clone and Setup
 
 ```bash
@@ -95,6 +99,10 @@ ENVIRONMENT=development
 DEBUG=True
 API_V1_STR=/v1
 SECRET_KEY=your-secret-key-change-in-production
+
+# Database Configuration
+DATABASE_URL=postgresql://user:password@postgres:5432/yiask_db
+ENABLE_MIGRATION=true
 
 # CORS Settings
 CORS_ORIGINS=["http://localhost:3000", "http://frontend:3000"]
@@ -199,40 +207,178 @@ curl http://localhost:8000/health
 
 ### Backend Development
 
+#### Option 1: Local Development (Recommended for Development)
+
 ```bash
-# Access backend container
-docker-compose exec backend bash
+# Prerequisites:
+# - Python 3.11+
+# - PostgreSQL (local installation)
+# - Node.js 18+ (for frontend)
+# - Git
 
-# Run tests
-pytest
+# 1. Setup Python virtual environment
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Run specific test file
-pytest tests/test_exercises.py -v
+# 2. Install dependencies
+pip install -r requirements.txt
 
-# Create database migration
-alembic revision --autogenerate -m "description"
+# 3. Setup database
+# Create PostgreSQL database:
+createdb yiask_db
 
-# Apply migrations
+# Update .env.backend with local database URL:
+# DATABASE_URL=postgresql://username:password@localhost:5432/yiask_db
+
+# 4. Setup environment
+# Copy .env.backend.example to .env.backend and update:
+cp .env.backend.example .env.backend
+# Edit .env.backend with your local settings
+
+# 5. Run database migrations
+# Ensure ENABLE_MIGRATION=true in .env.backend
 alembic upgrade head
 
-# View logs
+# 6. Start backend server (with hot reload)
+uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+
+# 7. In another terminal, run tests
+pytest
+
+# 8. Run specific test file
+pytest tests/test_exercises.py -v
+
+# 9. Access API documentation
+# Open browser to: http://localhost:8000/docs
+
+# Database Management (Local):
+# Create migration script
+alembic revision --autogenerate -m "description"
+
+# Apply migrations manually
+alembic upgrade head
+
+# Check current migration status
+alembic current
+
+# View migration history
+alembic history
+
+# Downgrade to previous version (if needed)
+alembic downgrade -1
+```
+
+#### Option 2: Docker Deployment (Quick Start)
+
+```bash
+# Prerequisites:
+# - Docker and Docker Compose installed
+
+# 1. Start all services with Docker Compose
+# Migrations are automatically applied on backend container startup
+# This happens when ENABLE_MIGRATION=true in .env.backend
+docker-compose up -d
+
+# 2. Monitor backend startup and migration status
+# Watch the backend logs to see migration progress
 docker-compose logs -f backend
+
+# Expected log output:
+# INFO  - Database migrations applied successfully
+# INFO  - Started server process
+# INFO  - Uvicorn running on http://0.0.0.0:8000
+
+# 3. Access backend container (if needed for debugging)
+docker-compose exec backend bash
+
+# 4. Run tests inside container
+docker-compose exec backend pytest
+
+# 5. Run specific test file inside container
+docker-compose exec backend pytest tests/test_exercises.py -v
+
+# 6. Access API documentation
+# Open browser to: http://localhost:8000/docs
+
+# Database Management (Docker):
+# NOTE: Migrations are handled automatically by the backend container
+# Do NOT manually run 'alembic upgrade head' in Docker mode
+
+# Check migration status (read-only - for debugging)
+docker-compose exec backend alembic current
+
+# View migration history (read-only - for debugging)
+docker-compose exec backend alembic history
+
+# Create new migration (for development):
+# Switch to local development mode and use the commands from "Option 1: Local Development"
+# Then rebuild the Docker image to include the migration
+
+# View backend logs (includes automatic migration execution logs)
+docker-compose logs -f backend
+
+# Migration failure handling:
+# - Automatic rollback on error
+# - Error details logged to backend container logs
+# - Check docker-compose logs if container fails to start
+# - If migration fails, check DATABASE_URL and ENABLE_MIGRATION in .env.backend
 ```
 
 ### Frontend Development
 
-```bash
-# Access frontend container
-docker-compose exec frontend sh
+#### Option 1: Local Development (Recommended for Development)
 
-# Install dependencies
+```bash
+# Prerequisites:
+# - Node.js 18+
+# - npm or yarn
+
+# 1. Install dependencies
+cd frontend
 npm install
 
-# Run development server (hot reload)
+# 2. Setup environment
+# Copy .env.frontend.example to .env.frontend and update:
+cp .env.frontend.example .env.frontend
+# Edit .env.frontend with your settings (e.g., API URL)
+
+# 3. Start development server (hot reload)
 npm run dev
 
-# Build for production
+# 4. In another terminal, run tests
+npm test
+
+# 5. Build for production
 npm run build
+
+# 6. Preview production build locally
+npm run preview
+
+# 7. Access frontend
+# Open browser to: http://localhost:3000
+```
+
+#### Option 2: Docker Deployment (Quick Start)
+
+```bash
+# Prerequisites:
+# - Docker and Docker Compose installed
+
+# Frontend is automatically started with Docker Compose
+# See "Option 2: Docker Deployment" in Backend Development section
+
+# Access frontend container (if needed for debugging)
+docker-compose exec frontend sh
+
+# Install dependencies inside container
+docker-compose exec frontend npm install
+
+# Run development server inside container
+docker-compose exec frontend npm run dev
+
+# Build for production inside container
+docker-compose exec frontend npm run build
 
 # View logs
 docker-compose logs -f frontend

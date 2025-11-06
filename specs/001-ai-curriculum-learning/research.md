@@ -59,16 +59,25 @@ All technical decisions have been clarified through the specification and clarif
 - `.env.backend` - Backend-specific variables
 - `.env.frontend` - Frontend-specific variables
 
-### 6. Database Persistence
+### 6. Database Persistence & Versioning
 
-**Decision**: PostgreSQL with Named Volumes + Init Scripts
+**Decision**: PostgreSQL with Named Volumes + Alembic for Versioning
 
-**Rationale**: Named volumes provide reliable data persistence across container restarts with better data safety than bind mounts. Init scripts enable automatic database schema creation on first run, ensuring consistent deployment.
+**Rationale**: Named volumes provide reliable data persistence across container restarts with better data safety than bind mounts. Alembic provides complete database schema version control, enabling incremental changes, rollbacks, and team collaboration on database schema evolution.
 
 **Implementation**:
 - Named volume for data persistence
-- SQL initialization scripts for schema setup
-- Custom PostgreSQL configuration if needed
+- Alembic handles complete database schema creation (no init scripts)
+- Configuration: `backend/src/alembic.ini`
+- Connection via `DATABASE_URL` environment variable
+- Auto-migration enabled by `ENABLE_MIGRATION` parameter
+- Migration failures trigger automatic rollback with error logging
+
+**Migration Workflow**:
+- Migrations automatically applied on backend container startup
+- Triggered when `ENABLE_MIGRATION=true` in `.env.backend`
+- Supports both initial schema creation and incremental changes
+- Provides version history and rollback capabilities
 
 ## Dependencies Analysis
 

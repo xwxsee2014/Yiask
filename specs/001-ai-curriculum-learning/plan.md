@@ -15,7 +15,7 @@
 
 **Language/Version**: Python 3.11 (FastAPI backend), JavaScript/TypeScript (React frontend)
 **Primary Dependencies**: FastAPI, React, PostgreSQL, Docker Compose, MinerU, Dify (LLMOps), Xinference (TTS/ASR)
-**Storage**: PostgreSQL with named volumes for persistence
+**Storage**: PostgreSQL with named volumes for persistence + Alembic for database versioning
 **Testing**: pytest (backend), Jest/React Testing Library (frontend)
 **Target Platform**: Linux server with Docker Compose deployment
 **Project Type**: Web application (separate frontend/backend services)
@@ -142,6 +142,11 @@ backend/
 │   ├── api/             # FastAPI route handlers
 │   ├── core/            # Core configurations (auth, db, etc.)
 │   └── main.py          # FastAPI application entrypoint
+├── alembic/             # Alembic database migration scripts
+│   ├── versions/        # Migration files
+│   ├── env.py           # Alembic environment configuration
+│   └── script.py.mako   # Migration script template
+├── alembic.ini          # Alembic configuration file (backend/src/alembic.ini)
 ├── tests/               # pytest tests
 ├── Dockerfile           # Backend container definition
 └── requirements.txt     # Python dependencies
@@ -162,10 +167,12 @@ frontend/
 docker-compose.yml       # Multi-container orchestration
 .env                     # Root environment variables
 .env.backend             # Backend-specific environment variables
+│   ├── ENABLE_MIGRATION # Enable database migration trigger (true/false)
+│   └── DATABASE_URL     # Database connection URL
 .env.frontend            # Frontend-specific environment variables
 
 postgres/
-├── init/                # Database initialization scripts
+├── data/                # PostgreSQL data persistence (named volume)
 └── Dockerfile           # PostgreSQL configuration (custom if needed)
 ```
 
@@ -186,6 +193,11 @@ All technical decisions clarified through specification and clarification sessio
 - ✓ PDF processing: MinerU component
 - ✓ Configuration: .env files
 - ✓ Database: PostgreSQL with named volumes
+- ✓ Database versioning: Alembic (backend/src/alembic.ini)
+- ✓ Migration trigger: ENABLE_MIGRATION parameter in .env.backend
+- ✓ Initial database: Full Alembic control (no init scripts)
+- ✓ Connection config: DATABASE_URL environment variable
+- ✓ Failure handling: Auto-rollback + error logging
 
 All decisions comply with Constitution principles.
 

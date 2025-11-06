@@ -34,6 +34,11 @@
 - Q: If users upload PDFs, what component should be used for content recognition and image extraction? → A: MinerU - for PDF content recognition including OCR and image extraction
 - Q: How should offline content generation be implemented since the review process is simple? → A: FastAPI background tasks + database status tracking (simple polling for progress, no queue system)
 - Q: Should AI text generation and evaluation services use Dify agents or direct API calls? → A: Use Dify as LLMOps platform to create agents for calling (not direct model API calls)
+- Q: Alembic 配置文件应该如何设置和管理？ → A: 集成在 backend/src/ 目录下（backend/src/alembic.ini）
+- Q: 数据库迁移应该在何时自动触发运行？ → A: 在 .env.backend 中添加一个 ENABLE_MIGRATION 参数进行触发
+- Q: 初始数据库设置如何处理？是否需要保留 init 脚本？ → A: 完全使用 Alembic，包括初始数据库创建
+- Q: 迁移失败时如何处理和回滚？ → A: 自动回滚 + 日志记录
+- Q: Alembic 的数据库连接配置应该如何管理？ → A: DATABASE_URL
 
 ## User Scenarios & Testing
 
@@ -78,23 +83,6 @@
 **Why this priority**: 语音朗读是英语学习的关键环节，特别是对于听力和口语技能的培养。这个功能将文本学习转化为多感官学习体验，显著提升学习效果。
 
 **Independent Test**: 可以通过以下方式独立测试：生成包含问题的练习 → 点击语音播放按钮 → 验证语音清晰度、发音准确性和语调自然度。功能可独立于图片功能运行。
-
-**Acceptance Scenarios**:
-
-1. **Given** 练习中包含问题"What is your favorite hobby?"，**When** 学习者点击语音播放按钮，**Then** 系统播放清晰、自然的英语语音朗读
-2. **Given** 练习中包含较长的对话文本，**When** 学习者请求语音朗读，**Then** 系统能够流畅地朗读整个对话，语调自然有感情
-3. **Given** 学习者对某个词汇的发音不确定，**When** 学习者选择该词汇并点击朗读，**Then** 系统单独朗读该词汇，发音清晰标准
-4. **Given** 学习者正在移动设备上使用，**When** 学习者点击语音播放，**Then** 语音可以通过设备扬声器或耳机正常播放
-
----
-
-### User Story 2.1 - AI语音朗读功能 (Priority: P2)
-
-作为英语学习者，我希望每个生成的练习题目都配备清晰的AI语音朗读，帮助我熟悉英语的语音语调，提高听力和口语能力。
-
-**Why this priority**: 语音朗读是英语学习的关键环节，特别是对于听力和口语技能的培养。这个功能将文本学习转化为多感官学习体验，显著提升学习效果。
-
-**Independent Test**: 可以通过以下方式独立测试：生成包含问题的练习 → 点击语音播放按钮 → 验证语音清晰度、发音准确性和语调自然度。功能可独立于图片功能和语音输入功能运行。
 
 **Acceptance Scenarios**:
 
