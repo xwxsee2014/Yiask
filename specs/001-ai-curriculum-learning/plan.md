@@ -14,6 +14,8 @@
 ## Technical Context
 
 **Language/Version**: Python 3.11 (FastAPI backend), JavaScript/TypeScript (React frontend)
+**Package Management**: uv for virtual environment isolation and package dependency management
+**Dependency Format**: pyproject.toml for all Python dependencies (NOT requirements.txt)
 **Primary Dependencies**: FastAPI, React, PostgreSQL, Docker Compose, MinerU, Dify (LLMOps), Xinference (TTS/ASR)
 **Storage**: PostgreSQL with named volumes for persistence + Alembic for database versioning
 **Testing**: pytest (backend), Jest/React Testing Library (frontend)
@@ -149,7 +151,8 @@ backend/
 ├── alembic.ini          # Alembic configuration file (backend/src/alembic.ini)
 ├── tests/               # pytest tests
 ├── Dockerfile           # Backend container definition
-└── requirements.txt     # Python dependencies
+├── pyproject.toml       # Python dependencies (uv package management)
+└── uv.lock              # Dependency lock file (uv generated)
 
 frontend/
 ├── src/
@@ -187,6 +190,8 @@ postgres/
 **Output**: `research.md` (generated)
 
 All technical decisions clarified through specification and clarification sessions:
+- ✓ Python package management: uv for virtual environment isolation and dependency management
+- ✓ Dependency specification: pyproject.toml for all Python dependencies (NOT requirements.txt)
 - ✓ Multi-container orchestration: Docker Compose
 - ✓ AI services: Dify as LLMOps platform layer
 - ✓ Task management: FastAPI background tasks
@@ -273,6 +278,12 @@ All decisions comply with Constitution principles.
 - RESTful design following standard conventions
 - Auto-generated documentation at `/docs`
 - All endpoints defined in `contracts/api-spec.yaml`
+
+**Package Management Approach**:
+- Use `uv` for creating and managing Python virtual environments
+- All Python dependencies specified in `pyproject.toml` (NO requirements.txt)
+- Dependency lock file `uv.lock` ensures reproducible builds
+- uv provides faster dependency resolution compared to pip
 
 Future enhancement: GraphQL can be added later if complex dashboard queries become a bottleneck.
 

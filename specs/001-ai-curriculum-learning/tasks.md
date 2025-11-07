@@ -5,6 +5,8 @@
 
 **Feature Name**: Yiask AI智能课程练习平台 (AI-powered English learning platform)
 **Tech Stack**: FastAPI backend + React frontend + PostgreSQL + Docker Compose + Alembic
+**Package Management**: uv for Python virtual environment and dependency management
+**Dependency Format**: pyproject.toml (NOT requirements.txt)
 **AI Services**: Dify (text generation), Xinference (TTS/ASR), MinerU (PDF processing)
 **Database Versioning**: Alembic (backend/src/alembic.ini)
 **Migration Management**: Auto-migration via ENABLE_MIGRATION parameter in .env.backend
@@ -31,6 +33,7 @@ Based on plan.md, this is a **web application (Option 2)**: `backend/` and `fron
 ### Option 1: Local Development (Required for Backend Development)
 - **Use for**: Backend development, database schema changes, migration generation
 - Run backend and frontend locally for easier debugging and hot reload
+- Use `uv sync` to install Python dependencies from pyproject.toml
 - Use `uvicorn src.main:app --reload` for backend
 - Use `npm run dev` for frontend
 - Manual migration management: `alembic upgrade head`
@@ -51,7 +54,7 @@ Based on plan.md, this is a **web application (Option 2)**: `backend/` and `fron
 **Purpose**: Project initialization and basic structure
 
 - [ ] T001 Create project structure per plan.md in backend/ and frontend/ directories
-- [ ] T002 Initialize FastAPI backend with Python 3.11 dependencies in backend/requirements.txt
+- [ ] T002 Initialize FastAPI backend with pyproject.toml (using uv for package management)
 - [ ] T003 Initialize React frontend with TypeScript in frontend/package.json
 - [ ] T004 [P] Configure Docker Compose multi-service setup in docker-compose.yml
 - [ ] T005 [P] Create environment configuration templates (.env, .env.backend, .env.frontend)
@@ -492,6 +495,11 @@ alembic downgrade -1
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
 - Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence
+- **Package Management**: Use `uv` for Python dependencies (NOT pip) and specify all dependencies in `pyproject.toml` (NOT requirements.txt)
+  - `uv sync` - Install/update all dependencies from pyproject.toml
+  - `uv add package_name` - Add new dependency
+  - `uv remove package_name` - Remove dependency
+  - `uv run python script.py` - Run Python script with project dependencies
 - External services (Dify, Xinference, MinerU) must be deployed and accessible for full functionality
 - Database migrations: Use Alembic (backend/src/alembic.ini) - Local mode for generation, Docker mode for testing only
 - Frontend components marked [P] can be developed in parallel with backend endpoints

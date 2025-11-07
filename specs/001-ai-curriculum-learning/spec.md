@@ -26,6 +26,8 @@
 
 ### Session 2025-11-04
 
+- Q: What Python package management and virtual environment tool should be used for backend development? → A: uv - Use uv for virtual environment isolation and package dependency management
+- Q: What dependency specification format should be used with uv? → A: pyproject.toml - Use pyproject.toml instead of requirements.txt for all Python dependencies
 - Q: Which orchestration approach do you prefer for multi-container deployment? → A: Docker Compose (docker-compose.yaml) - Simple, YAML-based orchestration perfect for this scale
 - Q: How should the container services be structured for the multi-container setup? → A: Separate containers: Backend (FastAPI), Frontend (React), Database (PostgreSQL), with AI services (Dify, Xinference) deployed independently
 - Q: How should environment variables and configuration be managed for the multi-container setup? → A: Root .env file + service-specific env files (.env.backend, .env.frontend) for configuration

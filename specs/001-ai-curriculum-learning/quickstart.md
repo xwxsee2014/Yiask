@@ -215,14 +215,17 @@ curl http://localhost:8000/health
 # - PostgreSQL (local installation)
 # - Node.js 18+ (for frontend)
 # - Git
+# - uv (Python package manager)
 
-# 1. Setup Python virtual environment
+# 1. Install uv (if not already installed)
+# On macOS/Linux:
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# On Windows (PowerShell):
+# iwr https://astral.sh/uv/install.ps1 -useb | iex
+
+# 2. Setup Python virtual environment and install dependencies
 cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# 2. Install dependencies
-pip install -r requirements.txt
+uv sync  # Creates venv and installs dependencies from pyproject.toml
 
 # 3. Setup database
 # Create PostgreSQL database:
@@ -240,16 +243,21 @@ cp .env.backend.example .env.backend
 # Ensure ENABLE_MIGRATION=true in .env.backend
 alembic upgrade head
 
-# 6. Start backend server (with hot reload)
+# 6. Activate virtual environment (if not already activated)
+# uv automatically activates the venv when you run commands
+# To manually activate:
+# source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# 7. Start backend server (with hot reload)
 uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
 
-# 7. In another terminal, run tests
+# 8. In another terminal (with venv activated), run tests
 pytest
 
-# 8. Run specific test file
+# 9. Run specific test file
 pytest tests/test_exercises.py -v
 
-# 9. Access API documentation
+# 10. Access API documentation
 # Open browser to: http://localhost:8000/docs
 
 # Database Management (Local):
@@ -267,6 +275,19 @@ alembic history
 
 # Downgrade to previous version (if needed)
 alembic downgrade -1
+
+# Additional uv commands (for development):
+# Update dependencies when pyproject.toml changes
+uv sync
+
+# Install new package
+uv add package_name
+
+# Remove package
+uv remove package_name
+
+# Run Python script with project dependencies
+uv run python script.py
 ```
 
 #### Option 2: Docker Deployment (Quick Start)
