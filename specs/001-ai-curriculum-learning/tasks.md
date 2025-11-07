@@ -181,41 +181,41 @@ Based on plan.md, this is a **web application (Option 2)**: `backend/` and `fron
 
 ---
 
-## Phase 5: User Story 2.2 - 语音输入练习功能 (Priority: P2)
+## Phase 5: User Story 2.1 - 语音输入练习功能 (Priority: P2)
 
 **Goal**: Enable learners to answer questions via voice input with real-time evaluation and feedback, including recommended answers
 
 **Independent Test**: Learner sees exercise question → records voice answer → system transcribes → provides quality evaluation → displays recommended answer with voice
 
-### Tests for User Story 2.2 (MANDATORY - TDD approach) ⚠️
+### Tests for User Story 2.1 (MANDATORY - TDD approach) ⚠️
 
-- [ ] T060 [P] [US2.2] Contract test for voice input endpoints in backend/tests/contract/test_voice_input.py
-- [ ] T061 [P] [US2.2] Contract test for answer evaluation endpoints in backend/tests/contract/test_evaluation.py
-- [ ] T062 [P] [US2.2] Integration test for voice-to-evaluation workflow in backend/tests/integration/test_voice_evaluation_flow.py
+- [ ] T060 [P] [US2.1] Contract test for voice input endpoints in backend/tests/contract/test_voice_input.py
+- [ ] T061 [P] [US2.1] Contract test for answer evaluation endpoints in backend/tests/contract/test_evaluation.py
+- [ ] T062 [P] [US2.1] Integration test for voice-to-evaluation workflow in backend/tests/integration/test_voice_evaluation_flow.py
 
-### Models for User Story 2.2
+### Models for User Story 2.1
 
-- [ ] T063 [P] [US2.2] Create VoiceInput model in backend/src/models/voice_input.py
-- [ ] T064 [P] [US2.2] Create AnswerEvaluation model in backend/src/models/evaluation.py
+- [ ] T063 [P] [US2.1] Create VoiceInput model in backend/src/models/voice_input.py
+- [ ] T064 [P] [US2.1] Create AnswerEvaluation model in backend/src/models/evaluation.py
 
-### Services for User Story 2.2
+### Services for User Story 2.1
 
-- [ ] T065 [US2.2] Implement Xinference ASR integration in backend/src/services/speech_service.py (Whisper model)
-- [ ] T066 [US2.2] Implement evaluation service with Dify agent in backend/src/services/evaluation_service.py
-- [ ] T067 [US2.2] Implement learning record tracking in backend/src/services/learning_service.py (depends on T063, T064)
+- [ ] T065 [US2.1] Implement Xinference ASR integration in backend/src/services/speech_service.py (Whisper model)
+- [ ] T066 [US2.1] Implement evaluation service with Dify agent in backend/src/services/evaluation_service.py
+- [ ] T067 [US2.1] Implement learning record tracking in backend/src/services/learning_service.py (depends on T063, T064)
 
-### API Endpoints for User Story 2.2
+### API Endpoints for User Story 2.1
 
-- [ ] T068 [US2.2] Implement voice input submission endpoint in backend/src/api/voice_input.py (depends on T065)
-- [ ] T069 [US2.2] Implement answer evaluation endpoint in backend/src/api/evaluation.py (depends on T066)
-- [ ] T070 [US2.2] Implement learning record management in backend/src/api/learning_records.py (depends on T067)
+- [ ] T068 [US2.1] Implement voice input submission endpoint in backend/src/api/voice_input.py (depends on T065)
+- [ ] T069 [US2.1] Implement answer evaluation endpoint in backend/src/api/evaluation.py (depends on T066)
+- [ ] T070 [US2.1] Implement learning record management in backend/src/api/learning_records.py (depends on T067)
 
-### Frontend for User Story 2.2
+### Frontend for User Story 2.1
 
-- [ ] T071 [P] [US2.2] Create voice recording component in frontend/src/components/VoiceRecorder.tsx
-- [ ] T072 [P] [US2.2] Create evaluation display component in frontend/src/components/EvaluationResult.tsx
-- [ ] T073 [P] [US2.2] Create recommended answer display with voice playback in frontend/src/components/RecommendedAnswer.tsx
-- [ ] T074 [US2.2] Integrate voice input with exercise interface (depends on T071, T072, T073)
+- [ ] T071 [P] [US2.1] Create voice recording component in frontend/src/components/VoiceRecorder.tsx
+- [ ] T072 [P] [US2.1] Create evaluation display component in frontend/src/components/EvaluationResult.tsx
+- [ ] T073 [P] [US2.1] Create recommended answer display with voice playback in frontend/src/components/RecommendedAnswer.tsx
+- [ ] T074 [US2.1] Integrate voice input with exercise interface (depends on T071, T072, T073)
 
 **Checkpoint**: Voice input functional - learners can speak answers, receive real-time evaluation, and hear recommended responses
 
@@ -304,14 +304,14 @@ Based on plan.md, this is a **web application (Option 2)**: `backend/` and `fron
 - **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
 - **User Stories (Phase 3+)**: All depend on Foundational phase completion
   - User stories can then proceed in parallel (if staffed)
-  - Or sequentially in priority order (P1 → P2 → P2.2 → P3)
+  - Or sequentially in priority order (P1 → P2 → P2.1 → P3)
 - **Polish (Final Phase)**: Depends on all desired user stories being complete
 
 ### User Story Dependencies
 
 - **User Story 1 (P1)**: Can start after Foundational (Phase 2) - No dependencies on other stories
 - **User Story 2 (P2)**: Can start after Foundational (Phase 2) - Depends on User Story 1 (needs Exercise model)
-- **User Story 2.2 (P2)**: Can start after Foundational (Phase 2) - Depends on User Story 2 (VoiceFile model)
+- **User Story 2.1 (P2)**: Can start after Foundational (Phase 2) - Depends on User Story 2 (VoiceFile model)
 - **User Story 3 (P3)**: Can start after Foundational (Phase 2) - Depends on User Story 1 (Exercise model)
 
 ### Within Each User Story
@@ -369,7 +369,7 @@ Task: "Implement Dify agent integration in backend/src/services/ai_service.py"
 1. Complete Setup + Foundational → Foundation ready
 2. Add User Story 1 → Test independently → Deploy/Demo (MVP!)
 3. Add User Story 2 → Test independently → Deploy/Demo
-4. Add User Story 2.2 → Test independently → Deploy/Demo
+4. Add User Story 2.1 → Test independently → Deploy/Demo
 5. Add User Story 3 → Test independently → Deploy/Demo
 6. Each story adds value without breaking previous stories
 
@@ -410,7 +410,7 @@ With multiple developers:
 - Foundational: 12 tasks (T009-T020)
 - User Story 1 (P1): 28 tasks (T021-T048)
 - User Story 2 (P2): 11 tasks (T049-T059)
-- User Story 2.2 (P5): 15 tasks (T060-T074)
+- User Story 2.1 (P2): 15 tasks (T060-T074)
 - User Story 3 (P3): 10 tasks (T075-T084)
 - Learning Progress: 4 tasks (T085-T088)
 - Polish: 14 tasks (T089-T102)
@@ -418,7 +418,7 @@ With multiple developers:
 **By Priority**:
 - P1 (User Story 1): 36 tasks (MVP)
 - P2 (User Story 2): 11 tasks
-- P2 (User Story 2.2): 15 tasks
+- P2 (User Story 2.1): 15 tasks
 - P3 (User Story 3): 10 tasks
 
 **Parallel Opportunities**: 67 tasks marked with [P]
@@ -426,7 +426,7 @@ With multiple developers:
 **Independent Test Criteria**:
 - US1: Content provider creates course → generates exercises → reviews/approves → learner practices
 - US2: Exercise displays with click-to-play voice朗读, verify audio quality
-- US2.2: Learner records voice answer → receives evaluation → sees recommended answer
+- US2.1: Learner records voice answer → receives evaluation → sees recommended answer
 - US3: Exercise displays with scenario image → learner answers based on visual context
 
 ---

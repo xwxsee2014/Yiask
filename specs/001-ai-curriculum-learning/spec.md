@@ -31,7 +31,7 @@
 - Q: Which orchestration approach do you prefer for multi-container deployment? → A: Docker Compose (docker-compose.yaml) - Simple, YAML-based orchestration perfect for this scale
 - Q: How should the container services be structured for the multi-container setup? → A: Separate containers: Backend (FastAPI), Frontend (React), Database (PostgreSQL), with AI services (Dify, Xinference) deployed independently
 - Q: How should environment variables and configuration be managed for the multi-container setup? → A: Root .env file + service-specific env files (.env.backend, .env.frontend) for configuration
-- Q: How should the PostgreSQL database container be configured? → A: Named volume for data persistence + init scripts (.sql/.sh) for database schema creation
+- Q: How should the PostgreSQL database container be configured? → A: Named volume for data persistence (Alembic handles complete database schema creation, no init scripts)
 - Q: How should service dependencies and build strategy be configured? → A: Local Docker builds (./backend/Dockerfile, ./frontend/Dockerfile) + depends_on with health checks for startup order
 - Q: If users upload PDFs, what component should be used for content recognition and image extraction? → A: MinerU - for PDF content recognition including OCR and image extraction
 - Q: How should offline content generation be implemented since the review process is simple? → A: FastAPI background tasks + database status tracking (simple polling for progress, no queue system)
@@ -95,7 +95,7 @@
 
 ---
 
-### User Story 2.2 - 语音输入练习功能 (Priority: P2)
+### User Story 2.1 - 语音输入练习功能 (Priority: P2)
 
 作为英语学习者，我希望能够通过语音直接回答练习问题，并获得实时的质量评价和推荐回答，这样我可以改进我的表达并学习更好的说法。
 
@@ -106,9 +106,7 @@
 **Acceptance Scenarios**:
 
 1. **Given** 练习问题为"What is your favorite hobby?"，**When** 学习者通过语音回答"I enjoy reading books"，**Then** 系统能够准确识别并转换为文字，并给出质量评价"很好，语法正确，表达自然"
-2. **Given** 学习者发音不够清晰，**When** 学习者多次尝试语音输入，**Then** 系统能够容忍一定程度的发音偏差并进行准确识别，并给出改进建议
-3. **Given** 学习者在嘈杂环境中，**When** 学习者进行语音输入，**Then** 系统能够过滤噪音并准确识别语音，并提供清晰的质量评价
-4. **Given** 学习者回答质量不高，**When** 系统进行评价后，**Then** 系统能够提供推荐回答并通过语音朗读推荐回答和评价内容
+2. **Given** 学习者回答质量不高，**When** 系统进行评价后，**Then** 系统能够提供推荐回答并通过语音朗读推荐回答和评价内容
 
 ---
 

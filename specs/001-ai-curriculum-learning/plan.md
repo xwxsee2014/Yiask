@@ -33,7 +33,7 @@
 - **Status**: COMPLIANT - Feature has 3 P1, 2 P2, and 1 P3 user stories with clear priorities
 - **Evidence**:
   - P1: User Story 1 - Course-synchronized content generation (核心价值主张)
-  - P2: User Story 2, 2.1, 2.2 - AI voice features (TTS and speech input)
+  - P2: User Story 2, 2.1 - AI voice features (TTS and speech input)
   - P3: User Story 3 - Image-text combined exercises
 - **Justification**: Each story delivers independent value and has explicit acceptance scenarios
 
@@ -48,7 +48,7 @@
 - **Evidence**:
   - Story 1:独立测试 clearly defined in spec
   - Story 2:独立测试 clearly defined in spec
-  - Story 2.2:独立测试 clearly defined in spec
+  - Story 2.1:独立测试 clearly defined in spec
   - Story 3:独立测试 clearly defined in spec
 - **Justification**: Stories can be demonstrated and tested in isolation
 
