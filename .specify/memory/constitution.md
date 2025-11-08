@@ -1,41 +1,41 @@
 <!--
-Sync Impact Report - Constitution Update
+宪章更新同步影响报告
 =========================================
-Version: 1.0.0 (initial)
-Modified: 2025-10-31
-Changes: New constitution establishment with 5 core principles, 2 additional sections, and governance framework
-Templates Updated: ✅ plan-template.md, ✅ spec-template.md, ✅ tasks-template.md
+版本：1.0.0 → 1.0.0（本地化）
+修改日期：2025-11-08
+变更：将整个宪章文档从英文本地化为中文，保持5个核心原则、2个附加章节和治理框架不变
+已更新模板：✅ plan-template.md、✅ spec-template.md、✅ tasks-template.md（无内容变更，仅注释标记为中文）
 -->
 
-# Specify Constitution
+# Specify 宪章
 
-## Core Principles
+## 核心原则
 
-### I. User Story Driven Development
-Every feature MUST be decomposed into independently testable user stories with explicit priorities (P1, P2, P3). Each story MUST deliver value on its own without requiring other stories. Priority P1 stories form the MVP foundation - they MUST be completed before P2, and P2 before P3. Rationale: Prioritization ensures focused delivery and prevents feature bloat; independent stories enable parallel development and incremental value.
+### I. 用户故事驱动开发
+每个功能**必须**分解为具有明确优先级（P1、P2、P3）的独立可测试用户故事。每个故事**必须**能够独立交付价值，无需依赖其他故事。优先级P1故事构成MVP基础——它们**必须**在P2之前完成，P2在P3之前完成。理由：优先级排序确保专注交付并防止功能臃肿；独立故事支持并行开发和增量价值交付。
 
-### II. Test-First (NON-NEGOTIABLE)
-TDD cycle is MANDATORY for all user stories. Tests MUST be written and verified to FAIL before implementation begins. Contract tests MUST precede integration tests, which MUST precede user acceptance validation. Red-Green-Refactor cycle MUST be strictly enforced. Rationale: Test-first ensures requirements clarity, prevents regressions, and creates executable specifications that document intended behavior.
+### II. 测试优先（不可协商）
+TDD周期对所有用户故事是**强制性的**。测试**必须**在实施开始前编写并验证为失败状态。契约测试**必须**先于集成测试，集成测试**必须**先于用户验收验证。红-绿-重构周期**必须**严格执行。理由：测试优先确保需求清晰，防止回归，并创建记录预期行为的可执行规范。
 
-### III. Independent Testability
-Each user story MUST be testable and demonstrable in isolation without dependencies on incomplete stories. Integration points MUST be clearly defined with contract tests. Stories MUST maintain backward compatibility when added incrementally. Rationale: Independent testability enables parallel development, reduces integration risk, and allows flexible deployment of individual features.
+### III. 独立可测试性
+每个用户故事**必须**能够在不依赖未完成故事的情况下独立测试和演示。集成点**必须**通过契约测试明确定义。故事在增量添加时**必须**保持向后兼容性。理由：独立可测试性支持并行开发，降低集成风险，并允许灵活部署各个功能。
 
-### IV. Phased Implementation
-Projects MUST follow the ordered phases: Setup → Foundational → User Stories → Polish. Foundational phase MUST complete before ANY user story implementation begins. Within each story, implementation order MUST follow: Models → Services → Endpoints → Integration. Rationale: Phased approach ensures proper foundation, prevents technical debt, and maintains architectural consistency across stories.
+### IV. 分阶段实施
+项目**必须**遵循有序阶段：设置 → 基础 → 用户故事 → 完善。基础阶段**必须**在任何用户故事实施开始前完成。在每个故事内，实施顺序**必须**遵循：模型 → 服务 → 端点 → 集成。理由：分阶段方法确保适当的基础，防止技术债务，并跨故事保持架构一致性。
 
-### V. Simplicity & Constitution Compliance
-All decisions MUST favor simplicity unless complexity is justified and documented in plan-template.md complexity tracking section. Every implementation MUST pass Constitution Check gates before proceeding. YAGNI principles apply - don't build what isn't required by current priorities. Rationale: Simplicity reduces maintenance burden; constitution compliance ensures consistency; YAGNI prevents over-engineering and wasted effort.
+### V. 简洁性与宪章合规
+所有决策**必须**倾向于简洁，除非复杂性在plan-template.md的复杂性跟踪部分中得到证明和记录。每个实施**必须**在继续前通过宪章检查门禁。YAGNI原则适用——不要构建当前优先级未要求的内容。理由：简洁性降低维护负担；宪章合规确保一致性；YAGNI防止过度工程化和浪费精力。
 
-## Development Workflow
+## 开发工作流
 
-All features MUST follow the Specify workflow: specification (spec-template.md) → planning (plan-template.md) → tasks (tasks-template.md) → implementation. The Constitution Check section in plan-template.md serves as a mandatory gate - violations MUST be justified in writing before proceeding. Project structure decisions MUST be documented and referenced in the plan. Dependencies between tasks MUST be explicit, and parallel execution opportunities MUST be identified and utilized when team capacity allows.
+所有功能**必须**遵循Specify工作流：规范制定（spec-template.md）→ 计划制定（plan-template.md）→ 任务分解（tasks-template.md）→ 实施。plan-template.md中的宪章检查部分充当强制门禁——违规**必须**在继续前以书面形式证明。依赖项结构决策**必须**在计划中记录和引用。任务之间的依赖项**必须**明确标识，并且在团队容量允许的情况下必须利用并行执行机会。
 
-## Quality Gates & Review Process
+## 质量门禁与审查流程
 
-Every user story MUST pass independent testing before merging. Constitution compliance MUST be verified during code review using the checklist-template.md. Complexity justification MUST be reviewed when principles are violated. Documentation (quickstart.md, API contracts) MUST be complete before story closure. Tests MUST demonstrate both success and failure scenarios. Performance and security requirements from the feature specification MUST be validated during review.
+每个用户故事**必须**在合并前通过独立测试。在代码审查期间**必须**使用checklist-template.md验证宪章合规性。违反原则时**必须**审查复杂性证明。文档（quickstart.md、API契约）**必须**在故事关闭前完成。测试**必须**展示成功和失败场景。功能规范中的性能和安全性要求**必须**在审查期间得到验证。
 
-## Governance
+## 治理
 
-Constitution supersedes all other development practices. Amendments require documentation of the change, rationale for modification, and explicit version bump following semantic versioning rules (MAJOR for principle removal/redefinition, MINOR for new principles, PATCH for clarifications). All PRs/reviews must verify compliance with constitution principles. Complexity violations must include written justification per plan-template.md. Use templates/ directory for all project planning artifacts - these templates encode the constitution principles into actionable workflows.
+宪章凌驾于所有其他开发实践之上。修订需要变更文档、修改理由，并遵循语义版本规则进行显式版本递增（原则移除/重新定义为MAJOR版本，新原则为MINOR版本，澄清为PATCH版本）。所有PR/审查必须验证与宪章原则的合规性。复杂性违规必须包括按plan-template.md的书面证明。使用templates/目录进行所有项目规划工件——这些模板将宪章原则编码为可执行工作流。
 
-**Version**: 1.0.0 | **Ratified**: 2025-10-31 | **Last Amended**: 2025-10-31
+**版本**：1.0.0 | **批准日期**：2025-10-31 | **最后修订**：2025-11-08
